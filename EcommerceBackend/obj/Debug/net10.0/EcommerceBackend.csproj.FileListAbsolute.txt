@@ -328,3 +328,4 @@ C:\Users\gaura\.gemini\antigravity\scratch\EcommerceBackend\obj\Debug\net10.0\re
 C:\Users\gaura\.gemini\antigravity\scratch\EcommerceBackend\obj\Debug\net10.0\EcommerceBackend.pdb
 C:\Users\gaura\.gemini\antigravity\scratch\EcommerceBackend\obj\Debug\net10.0\EcommerceBackend.genruntimeconfig.cache
 C:\Users\gaura\.gemini\antigravity\scratch\EcommerceBackend\obj\Debug\net10.0\ref\EcommerceBackend.dll
+C:\Users\gaura\.gemini\antigravity\scratch\EcommerceBackend\obj\Debug\net10.0\EcommerceBackend.sourcelink.json

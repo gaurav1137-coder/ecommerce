@@ -1,6 +1,6 @@
 <div class="login-page">
 
-  <div class="login-card">
+  <form class="login-card" (ngSubmit)="login()">
 
     <div class="logo">
       NEXORA
@@ -11,17 +11,19 @@
 
     <input
       type="text"
+      name="mobileNumber"
       placeholder="Enter Mobile Number"
       [(ngModel)]="mobileNumber"
     />
 
     <input
       type="password"
+      name="otp"
       placeholder="Enter OTP (0000)"
       [(ngModel)]="otp"
     />
 
-    <button (click)="login()">
+    <button type="submit">
       Login
     </button>
 
@@ -30,6 +32,6 @@
       <p>Admin: <b>9876543210</b> (OTP: 0000)</p>
     </div>
 
-  </div>
+  </form>
 
 </div>

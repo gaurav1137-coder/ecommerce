@@ -36,7 +36,8 @@ export class Login {
     this.auth.login(this.mobileNumber, this.otp).subscribe({
       next: (result) => {
         this.toastr.success('Welcome back! Logged in successfully.');
-        const role = result.user.roleId === 1 ? 'admin' : 'user';
+        const user = result?.user ?? result?.User;
+        const role = user?.roleId === 1 ? 'admin' : 'user';
         if (role === 'admin') {
           this.router.navigate(['/admin']);
         } else {

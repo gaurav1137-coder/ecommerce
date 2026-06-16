@@ -26,15 +26,18 @@ export class AuthService {
   login(mobileNumber: string, otp: string): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/Auth/login`, { mobileNumber, otp }).pipe(
       tap(res => {
-        if (res && res.token) {
-          localStorage.setItem('token', res.token);
-          const role = res.user.roleId === 1 ? 'admin' : 'user';
+        const token = res?.token ?? res?.Token;
+        const user = res?.user ?? res?.User;
+
+        if (token && user) {
+          localStorage.setItem('token', token);
+          const role = user.roleId === 1 ? 'admin' : 'user';
           const userObj = {
-            id: res.user.id,
-            username: res.user.name,
+            id: user.id,
+            username: user.name,
             role: role,
-            mobileNumber: res.user.mobileNumber,
-            email: res.user.email
+            mobileNumber: user.mobileNumber,
+            email: user.email
           };
           localStorage.setItem('user', JSON.stringify(userObj));
           this.currentUser$.next(userObj);
