@@ -1,0 +1,31 @@
+<div class="admin-page">
+
+  <h2>Admin Dashboard</h2>
+
+  <!-- ADD PRODUCT -->
+  <div class="form-box">
+
+    <input [(ngModel)]="newProduct.name" placeholder="Product Name" />
+    <input [(ngModel)]="newProduct.price" type="number" placeholder="Price" />
+
+    <button (click)="addProduct()">Add Product</button>
+
+  </div>
+
+  <!-- PRODUCT LIST -->
+  <div class="product-list">
+
+    <div class="card" *ngFor="let p of products">
+
+      <h3>{{ p.name }}</h3>
+      <p>₹{{ p.price }}</p>
+
+      <button (click)="deleteProduct(p.id)">
+        Delete
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

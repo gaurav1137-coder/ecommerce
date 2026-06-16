@@ -1,0 +1,60 @@
+<!-- src/app/features/products/product-details/product-details.html -->
+<div class="loading-state" *ngIf="loading" style="padding: 100px; text-align: center; color: white;">
+  <p style="font-size: 1.2rem;">Loading product details...</p>
+</div>
+
+<div class="error-state" *ngIf="!loading && errorMsg" style="padding: 100px; text-align: center; color: white;">
+  <h2 style="color: #ef4444; margin-bottom: 20px;">Product Not Found</h2>
+  <p style="margin-bottom: 30px;">{{ errorMsg }}</p>
+  <button routerLink="/products" style="background: #4f46e5; color: white; padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer;">Back to Products</button>
+</div>
+
+<section class="product-page" *ngIf="!loading && !errorMsg && product">
+  <div class="left">
+    <div class="image-container">
+      <img [src]="selectedImage" [alt]="product.name" class="main-image" />
+    </div>
+
+    <div class="thumbnail-row">
+      <img *ngFor="let img of productImages"
+           [src]="img"
+           (click)="selectedImage = img"
+           class="thumb" />
+    </div>
+  </div>
+
+  <div class="right product-card">
+    <h1>{{product.name}}</h1>
+
+    <div class="rating">⭐ {{product.rating}}</div>
+    <div class="offer-badge">30% OFF</div>
+
+    <div class="price-section">
+      <span class="price">₹{{product.price}}</span>
+      <span class="old-price">₹{{product.oldPrice}}</span>
+    </div>
+
+    <p class="description">{{product.description}}</p>
+
+    <h3>Select Size</h3>
+    <div class="sizes">
+      <button *ngFor="let size of sizes"
+              [class.active]="selectedSize === size"
+              (click)="selectedSize = size">
+        {{size}}
+      </button>
+    </div>
+
+    <h3>Quantity</h3>
+    <div class="quantity-box">
+      <button (click)="decrease()">-</button>
+      <span>{{quantity}}</span>
+      <button (click)="increase()">+</button>
+    </div>
+
+    <div class="action-buttons">
+      <button class="buy-btn" (click)="buyNow()">Buy Now</button>
+      <button class="cart-btn" (click)="addToCart()">Add To Cart</button>
+    </div>
+  </div>
+</section>

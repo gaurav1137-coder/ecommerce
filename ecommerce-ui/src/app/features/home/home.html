@@ -1,0 +1,435 @@
+<!-- HERO SECTION -->
+
+<section class="hero">
+
+  <div class="hero-overlay">
+
+    <div class="hero-content">
+
+      <span class="hero-badge">
+        PREMIUM SHOPPING EXPERIENCE
+      </span>
+
+      <h1>
+        NEXORA
+      </h1>
+
+      <h2>
+        Luxury Fashion & Electronics
+      </h2>
+
+      <p>
+        Explore premium collections crafted for modern lifestyle.
+      </p>
+
+      <div class="hero-buttons">
+
+       <button class="primary-btn" routerLink="/products">
+  Shop Now
+</button>
+
+<button class="secondary-btn" (click)="scrollToProducts()">
+  Explore Collection
+</button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- CATEGORY CYLINDER -->
+
+<section class="category-section">
+
+  <div class="section-title">
+    <h2>Shop By Category</h2>
+    <p>Select a category and jump directly</p>
+  </div>
+
+  <div class="cylinder-controls">
+
+    <button
+      class="rotate-btn"
+      (click)="rotateLeft()">
+
+      ◀
+
+    </button>
+
+    <button
+      class="rotate-btn"
+      (click)="rotateRight()">
+
+      ▶
+
+    </button>
+
+  </div>
+
+  <div class="cylinder-wrapper">
+
+    <div
+      class="cylinder"
+      [style.transform]="'rotateY(' + rotation + 'deg)'">
+
+      <div
+        class="cylinder-item men"
+        (click)="scrollToSection('men')">
+
+        👔
+        <span>Men</span>
+
+      </div>
+
+      <div
+        class="cylinder-item women"
+        (click)="scrollToSection('women')">
+
+        👗
+        <span>Women</span>
+
+      </div>
+
+      <div
+        class="cylinder-item electronics"
+        (click)="scrollToSection('electronics')">
+
+        💻
+        <span>Electronics</span>
+
+      </div>
+
+      <div class="cylinder-item">
+
+        ⌚
+        <span>Accessories</span>
+
+      </div>
+
+      <div class="cylinder-item">
+
+        👟
+        <span>Footwear</span>
+
+      </div>
+
+      <div class="cylinder-item">
+
+        🧸
+        <span>Kids</span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- TRENDING -->
+
+<section class="products-section">
+
+  <div class="section-title">
+    <h2>Trending Products</h2>
+  </div>
+
+  <div class="products-grid">
+
+    <div
+      class="product-card"
+      *ngFor="let product of products | slice:0:8">
+
+      <div class="image-box">
+
+        <img
+          [src]="product.image"
+          [alt]="product.name">
+
+      </div>
+
+      <div class="product-info">
+
+        <div class="rating">
+          ⭐ {{product.rating}}
+        </div>
+
+        <h3>
+          {{product.name}}
+        </h3>
+
+        <div class="price-box">
+
+          <span class="price">
+            ₹{{product.price}}
+          </span>
+
+          <span class="old-price">
+            ₹{{product.oldPrice}}
+          </span>
+
+        </div>
+
+             <a [routerLink]="['/product', product.id]"
+  class="view-btn">
+
+  View Details
+
+</a>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- MEN SECTION -->
+
+<section
+  id="men"
+  class="collection-section">
+
+  <div class="collection-banner men-banner">
+
+    <div class="banner-content">
+
+      <h2>Men Collection</h2>
+
+      <p>
+        Premium styles for modern men
+      </p>
+
+    </div>
+
+  </div>
+
+  <div class="products-grid">
+
+    <div
+      class="product-card"
+      *ngFor="let product of menProducts">
+
+      <img
+        [src]="product.image"
+        [alt]="product.name">
+
+      <div class="product-info">
+
+        <h3>
+          {{product.name}}
+        </h3>
+
+        <div class="price">
+          ₹{{product.price}}
+        </div>
+ <a [routerLink]="['/product', product.id]"
+  class="view-btn">
+
+  View Details
+
+</a>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- WOMEN SECTION -->
+
+<section
+  id="women"
+  class="collection-section">
+
+  <div class="collection-banner women-banner">
+
+    <div class="banner-content">
+
+      <h2>Women Collection</h2>
+
+      <p>
+        Luxury elegance & fashion
+      </p>
+
+    </div>
+
+  </div>
+
+  <div class="products-grid">
+
+    <div
+      class="product-card"
+      *ngFor="let product of womenProducts">
+
+      <img
+        [src]="product.image"
+        [alt]="product.name">
+
+      <div class="product-info">
+
+        <h3>
+          {{product.name}}
+        </h3>
+
+        <div class="price">
+          ₹{{product.price}}
+        </div>
+
+         <a [routerLink]="['/product', product.id]"
+  class="view-btn">
+
+  View Details
+
+</a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ELECTRONICS -->
+
+<section
+  id="electronics"
+  class="collection-section">
+
+  <div class="collection-banner electronics-banner">
+
+    <div class="banner-content">
+
+      <h2>Electronics</h2>
+
+      <p>
+        Discover latest gadgets
+      </p>
+
+    </div>
+
+  </div>
+
+  <div class="products-grid">
+
+    <div
+      class="product-card"
+      *ngFor="let product of electronicsProducts">
+
+      <img
+        [src]="product.image"
+        [alt]="product.name">
+
+      <div class="product-info">
+
+        <h3>
+          {{product.name}}
+        </h3>
+
+        <div class="price">
+          ₹{{product.price}}
+        </div>
+
+        <a [routerLink]="['/product', product.id]"
+  class="view-btn">
+
+  View Details
+
+</a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- STATS -->
+
+<section class="stats">
+
+  <div class="stat-box">
+    <h2>10K+</h2>
+    <p>Customers</p>
+  </div>
+
+  <div class="stat-box">
+    <h2>500+</h2>
+    <p>Products</p>
+  </div>
+
+  <div class="stat-box">
+    <h2>1200+</h2>
+    <p>Orders</p>
+  </div>
+
+  <div class="stat-box">
+    <h2>99%</h2>
+    <p>Satisfaction</p>
+  </div>
+
+</section>
+
+<!-- WHY US -->
+
+<section class="why-us">
+
+  <h2>
+    Why Choose NEXORA
+  </h2>
+
+  <div class="features">
+
+    <div class="feature-box">
+      🚚
+      <h3>Fast Delivery</h3>
+      <p>Quick shipping across India</p>
+    </div>
+
+    <div class="feature-box">
+      🔒
+      <h3>Secure Payment</h3>
+      <p>100% secure checkout process</p>
+    </div>
+
+    <div class="feature-box">
+      ⭐
+      <h3>Premium Quality</h3>
+      <p>Verified premium products</p>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- NEWSLETTER -->
+
+<section class="newsletter">
+
+  <h2>
+    Stay Updated
+  </h2>
+
+  <p>
+    Get offers, discounts and new arrivals
+  </p>
+
+  <div class="newsletter-box">
+
+    <input
+      type="email"
+      placeholder="Enter Email">
+
+    <button>
+      Subscribe
+    </button>
+
+  </div>
+
+</section>

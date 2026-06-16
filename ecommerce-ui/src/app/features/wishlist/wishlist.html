@@ -1,0 +1,57 @@
+<section class="wishlist-page">
+
+  <h2 class="title">My Wishlist ❤️</h2>
+
+  <!-- EMPTY -->
+  <div class="empty" *ngIf="items.length === 0">
+    <h3>No items in wishlist</h3>
+    <p>Add products you like ❤️</p>
+  </div>
+
+  <!-- GRID -->
+  <div class="wishlist-grid" *ngIf="items.length > 0">
+
+    <div class="wishlist-card" *ngFor="let item of items">
+
+      <!-- IMAGE -->
+      <div class="img-box">
+        <img [src]="item.image" [alt]="item.name">
+      </div>
+
+      <!-- INFO -->
+      <div class="info">
+
+        <h3>{{ item.name }}</h3>
+
+        <p class="price">₹{{ item.price }}</p>
+
+        <!-- ACTIONS -->
+        <div class="actions">
+
+          <!-- VIEW DETAILS -->
+          <a
+            class="view-btn"
+            [routerLink]="['/product', item.id]">
+
+            View Details
+
+          </a>
+
+          <!-- REMOVE -->
+          <button
+            class="remove-btn"
+            (click)="remove(item.id)">
+
+            ✕
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>

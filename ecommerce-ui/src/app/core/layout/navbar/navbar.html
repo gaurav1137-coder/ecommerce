@@ -1,0 +1,48 @@
+<nav class="navbar" *ngIf="showNavbar">
+
+  <div class="logo">NEXORA</div>
+
+  <div class="search-container">
+    <input [(ngModel)]="searchText" (keyup.enter)="search()" placeholder="Search..." />
+    <button (click)="search()">🔍</button>
+  </div>
+
+  <div class="nav-links">
+
+    <a routerLink="/">Home</a>
+    <a routerLink="/products">Products</a>
+    <a routerLink="/wishlist">Wishlist ❤️</a>
+
+    <a routerLink="/cart">
+      Cart 🛒
+      <span>{{ cartService.getCount() }}</span>
+    </a>
+
+    <a routerLink="/orders">Orders</a>
+
+    <!-- PROFILE DROPDOWN -->
+    <div class="profile" *ngIf="auth.isLoggedIn()">
+
+      <div class="profile-icon" (click)="toggleProfile($event)">
+        👤
+      </div>
+
+      <div class="dropdown" [class.show]="isProfileOpen" (click)="$event.stopPropagation()">
+        <div class="dropdown-header">Hello, {{ getUserName() }}</div>
+        <button (click)="goToProfile()">👤 Profile</button>
+        <button (click)="logout()">🚪 Logout</button>
+      </div>
+
+    </div>
+
+<!-- LOGIN BUTTON -->
+<button
+  class="login-btn"
+  *ngIf="!auth.isLoggedIn()"
+  routerLink="/login">
+
+  Login
+</button>
+  </div>
+
+</nav>

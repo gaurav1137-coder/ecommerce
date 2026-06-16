@@ -1,0 +1,36 @@
+<section class="products-page">
+
+  <h2 class="title">All Products</h2>
+
+  <div class="products-grid">
+
+    <div class="product-card" *ngFor="let product of products">
+
+      <img [src]="product.image" [alt]="product.name">
+
+      <div class="info">
+
+        <h3>{{ product.name }}</h3>
+
+        <div class="rating">⭐ {{ product.rating }}</div>
+
+        <div class="price">
+          ₹{{ product.price }}
+          <span class="old">₹{{ product.oldPrice }}</span>
+        </div>
+        <button class="wishlist-btn" [class.active]="isWishlisted(product.id)" (click)="toggleWishlist(product); $event.stopPropagation()">
+          ❤️
+        </button>
+
+        <!-- IMPORTANT NAVIGATION -->
+        <a [routerLink]="['/product', product.id]" class="btn">
+          View Details
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>

@@ -1,0 +1,48 @@
+<section class="profile-page">
+
+  <div class="profile-card">
+
+    <div class="avatar">👤</div>
+
+    <!-- VIEW MODE -->
+    <div *ngIf="!editMode">
+
+      <h2>{{ user.name || 'User' }}</h2>
+
+      <p><strong>Email:</strong> {{ user.email }}</p>
+      <p><strong>Phone:</strong> {{ user.phone }}</p>
+
+      <button class="btn" (click)="enableEdit()">
+        Edit Profile
+      </button>
+
+      <button class="btn logout" (click)="logout()">
+        Logout
+      </button>
+
+    </div>
+
+    <!-- EDIT MODE -->
+    <div *ngIf="editMode">
+
+      <input type="text" [(ngModel)]="user.name" placeholder="Name" />
+      <input type="email" [(ngModel)]="user.email" placeholder="Email" />
+      <input type="text" [(ngModel)]="user.phone" placeholder="Phone" />
+
+      <div class="actions">
+
+        <button class="btn save" (click)="saveProfile()">
+          Save
+        </button>
+
+        <button class="btn cancel" (click)="cancelEdit()">
+          Cancel
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>

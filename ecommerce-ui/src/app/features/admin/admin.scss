@@ -1,0 +1,44 @@
+.admin-page {
+  padding: 30px;
+  background: #0f172a;
+  min-height: 100vh;
+  color: white;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-box {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.form-box input {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+}
+
+.form-box button {
+  background: #22c55e;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+}
+
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.card {
+  background: rgba(255,255,255,0.08);
+  padding: 15px;
+  border-radius: 12px;
+}

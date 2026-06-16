@@ -1,0 +1,98 @@
+.checkout-page {
+  padding: 120px 8% 80px;
+  max-width: 900px;
+  margin: auto;
+  min-height: 100vh;
+  background: #050505;
+  color: white;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #d4af37;
+  letter-spacing: 2px;
+}
+
+.address-box,
+.summary {
+  background: #111827;
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  padding: 25px;
+  border-radius: 20px;
+  margin-bottom: 25px;
+  transition: 0.3s ease;
+}
+
+.address-box:hover,
+.summary:hover {
+  border-color: #d4af37;
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.15);
+}
+
+h3 {
+  color: #f5d76e;
+  margin-bottom: 15px;
+}
+
+.address-box input,
+.address-box textarea {
+  width: 100%;
+  margin: 10px 0;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  outline: none;
+  background: rgba(255,255,255,0.05);
+  color: white;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.address-box input::placeholder,
+.address-box textarea::placeholder {
+  color: #9ca3af;
+}
+
+.address-box input:focus,
+.address-box textarea:focus {
+  border-color: #d4af37;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+  font-size: 14px;
+  color: #cbd5e1;
+}
+
+.summary h3 {
+  color: #f5d76e;
+}
+
+.pay-btn {
+  width: 100%;
+  margin-top: 25px;
+  padding: 16px;
+  border: none;
+  background: linear-gradient(90deg, #d4af37, #f5d76e);
+  color: black;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.pay-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
+}
+
+.pay-btn:active {
+  transform: scale(0.98);
+}

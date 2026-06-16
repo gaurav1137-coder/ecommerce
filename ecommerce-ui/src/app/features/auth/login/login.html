@@ -1,0 +1,35 @@
+<div class="login-page">
+
+  <div class="login-card">
+
+    <div class="logo">
+      NEXORA
+    </div>
+
+    <h2>Welcome Back</h2>
+    <p class="subtext">Login using OTP</p>
+
+    <input
+      type="text"
+      placeholder="Enter Mobile Number"
+      [(ngModel)]="mobileNumber"
+    />
+
+    <input
+      type="password"
+      placeholder="Enter OTP (0000)"
+      [(ngModel)]="otp"
+    />
+
+    <button (click)="login()">
+      Login
+    </button>
+
+    <div class="hint">
+      <p>Customer: <b>1234567890</b> (OTP: 0000)</p>
+      <p>Admin: <b>9876543210</b> (OTP: 0000)</p>
+    </div>
+
+  </div>
+
+</div>

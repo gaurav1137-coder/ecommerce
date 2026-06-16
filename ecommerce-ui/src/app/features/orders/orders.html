@@ -1,0 +1,45 @@
+<section class="orders-page">
+
+  <h2 class="title">My Orders 🧾</h2>
+
+  <div class="empty" *ngIf="orders.length === 0">
+    No orders yet
+  </div>
+
+  <div class="order-grid" *ngIf="orders.length > 0">
+
+    <div class="order-card" *ngFor="let order of orders">
+
+      <div class="order-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h3 style="margin: 0; color: #f5d76e;">Order #{{ order.id }}</h3>
+        <span class="status-badge" [class]="order.status.toLowerCase()">{{ order.status }}</span>
+      </div>
+
+      <p>Total: ₹{{ order.total }}</p>
+
+      <p>Payment ID: {{ order.paymentId }}</p>
+
+      <small>{{ order.date }}</small>
+
+      <!-- VIEW DETAILS BUTTON -->
+      <button class="details-btn" (click)="toggleDetails(order.id)">
+        {{ expandedOrderId === order.id ? 'Hide Details ▲' : 'View Details' }}
+      </button>
+
+      <!-- ORDER DETAILS DRAWER -->
+      <div class="order-details" *ngIf="expandedOrderId === order.id">
+        <h4>Order Items</h4>
+        <div class="detail-item" *ngFor="let item of order.items">
+          <img [src]="item.image" [alt]="item.name" class="item-img">
+          <div class="item-info">
+            <p class="item-name">{{ item.name }}</p>
+            <p class="item-meta">Qty: {{ item.quantity }} | Price: ₹{{ item.price }}</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>

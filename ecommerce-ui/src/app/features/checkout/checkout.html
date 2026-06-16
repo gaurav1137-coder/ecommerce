@@ -1,0 +1,38 @@
+<section class="checkout-page">
+
+  <h2>Checkout</h2>
+
+  <!-- ADDRESS FORM -->
+  <div class="address-box">
+
+    <h3>Delivery Details</h3>
+
+    <input type="text" placeholder="Full Name" [(ngModel)]="address.name">
+    <input type="text" placeholder="Phone Number" [(ngModel)]="address.phone">
+    <input type="text" placeholder="City" [(ngModel)]="address.city">
+    <textarea placeholder="Full Address" [(ngModel)]="address.addressLine"></textarea>
+
+  </div>
+
+  <!-- CART SUMMARY -->
+  <div class="summary">
+
+    <h3>Your Items</h3>
+
+    <div *ngFor="let item of items" class="item">
+      <span>{{ item.name }}</span>
+      <span>₹{{ item.price }} x {{ item.quantity }}</span>
+    </div>
+
+    <hr>
+
+    <h3>Total: ₹{{ total }}</h3>
+
+  </div>
+
+  <!-- BUTTON -->
+  <button class="pay-btn" (click)="proceedToPayment()">
+    Proceed to Payment
+  </button>
+
+</section>
