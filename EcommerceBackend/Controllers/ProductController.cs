@@ -18,15 +18,55 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll(
+        [FromQuery] string? search,
+        [FromQuery] int? categoryId,
+        [FromQuery] int? page,
+        [FromQuery] int? pageSize)
     {
-        var products = await _context.Products
+        var query = _context.Products
             .Include(x => x.Category)
             .Include(x => x.Images)
             .Include(x => x.Sizes)
-            .ToListAsync();
+            .AsQueryable();
 
-        return Ok(products);
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            var searchLower = search.Trim().ToLower();
+            query = query.Where(x =>
+                x.Name.ToLower().Contains(searchLower) ||
+                (x.Category != null && x.Category.Name.ToLower().Contains(searchLower)) ||
+                x.Description.ToLower().Contains(searchLower) ||
+                x.Brand.ToLower().Contains(searchLower)
+            );
+        }
+
+        if (categoryId.HasValue)
+        {
+            query = query.Where(x => x.CategoryId == categoryId.Value);
+        }
+
+        if (page.HasValue && pageSize.HasValue)
+        {
+            var totalItems = await query.CountAsync();
+            var products = await query
+                .Skip((page.Value - 1) * pageSize.Value)
+                .Take(pageSize.Value)
+                .ToListAsync();
+
+            return Ok(new
+            {
+                TotalItems = totalItems,
+                Page = page.Value,
+                PageSize = pageSize.Value,
+                Products = products
+            });
+        }
+        else
+        {
+            var products = await query.ToListAsync();
+            return Ok(products);
+        }
     }
 
     [HttpGet("{id}")]

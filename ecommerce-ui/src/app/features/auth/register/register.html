@@ -1,0 +1,47 @@
+<div class="login-page">
+
+  <form class="login-card" (ngSubmit)="register()">
+
+    <div class="logo">
+      NEXORA
+    </div>
+
+    <h2>Create Account</h2>
+    <p class="subtext">Sign up to get started</p>
+
+    <input
+      type="text"
+      name="name"
+      placeholder="Enter Full Name"
+      [(ngModel)]="name"
+      [disabled]="loading"
+    />
+
+    <input
+      type="email"
+      name="email"
+      placeholder="Enter Email Address"
+      [(ngModel)]="email"
+      [disabled]="loading"
+    />
+
+    <input
+      type="text"
+      name="mobileNumber"
+      placeholder="Enter Mobile Number"
+      [(ngModel)]="mobileNumber"
+      [disabled]="loading"
+    />
+
+    <button type="submit" [disabled]="loading">
+      <span *ngIf="!loading">Register</span>
+      <span *ngIf="loading" class="spinner"></span>
+    </button>
+
+    <div class="auth-link">
+      Already have an account? <a routerLink="/login">Login</a>
+    </div>
+
+  </form>
+
+</div>

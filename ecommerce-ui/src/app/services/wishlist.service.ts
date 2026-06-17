@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { AuthService } from './auth.service';
 import { environment } from '../../environments/environment';
 import { ToastrService } from 'ngx-toastr';
+import { timeout } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -27,17 +28,22 @@ export class WishlistService {
   loadWishlist(userId?: number) {
     const id = userId || this.authService.getUser()?.id;
     if (id) {
-      this.http.get<any[]>(`${environment.apiUrl}/Wishlist/${id}`).subscribe({
+      this.http.get<any[]>(`${environment.apiUrl}/Wishlist/${id}`).pipe(timeout(20000)).subscribe({
         next: (data) => {
           this.items = data.map(item => {
-            const p = item.product;
-            const img = p.imageUrl || (p.images && p.images.length > 0 ? p.images[0].imageUrl : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600');
+            const p = item.product || item.Product;
+            if (!p) return null;
+            const images = p.images || p.Images;
+            const img = p.imageUrl || p.ImageUrl || (images && images.length > 0 ? (images[0].imageUrl || images[0].ImageUrl) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600');
             return {
               ...p,
+              id: p.id || p.Id,
+              name: p.name || p.Name,
+              price: p.price || p.Price,
               image: img,
-              wishlistId: item.id
+              wishlistId: item.id || item.Id
             };
-          });
+          }).filter(x => x !== null);
         },
         error: (err) => console.error('Failed to load wishlist', err)
       });
@@ -55,18 +61,21 @@ export class WishlistService {
       return;
     }
 
-    const exists = this.items.find(i => i.id === product.id);
+    const productId = product.id || product.Id;
+    const exists = this.items.find(i => i.id === productId);
     if (!exists) {
       this.http.post<any>(`${environment.apiUrl}/Wishlist`, {
         userId: user.id,
-        productId: product.id
-      }).subscribe({
+        productId: productId
+      }).pipe(timeout(20000)).subscribe({
         next: (res) => {
+          const wId = res.id || res.Id;
           this.items.push({
             ...product,
-            wishlistId: res.id
+            id: productId,
+            wishlistId: wId
           });
-          this.toastr.success(`${product.name} added to wishlist!`);
+          this.toastr.success(`${product.name || product.Name} added to wishlist!`);
         },
         error: (err) => {
           console.error('Failed to add to wishlist', err);
@@ -82,10 +91,10 @@ export class WishlistService {
 
     const idToDelete = item.wishlistId;
     if (idToDelete) {
-      this.http.delete(`${environment.apiUrl}/Wishlist/${idToDelete}`).subscribe({
+      this.http.delete(`${environment.apiUrl}/Wishlist/${idToDelete}`).pipe(timeout(20000)).subscribe({
         next: () => {
           this.items = this.items.filter(i => i.id !== id);
-          this.toastr.success(`${item.name} removed from wishlist`);
+          this.toastr.success(`${item.name || item.Name} removed from wishlist`);
         },
         error: (err) => {
           console.error('Failed to remove from wishlist', err);
@@ -100,8 +109,9 @@ export class WishlistService {
   }
 
   toggle(product: any) {
-    if (this.isInWishlist(product.id)) {
-      this.removeFromWishlist(product.id);
+    const productId = product.id || product.Id;
+    if (this.isInWishlist(productId)) {
+      this.removeFromWishlist(productId);
     } else {
       this.addToWishlist(product);
     }

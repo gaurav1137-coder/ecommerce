@@ -10,7 +10,7 @@ import { OrderService } from '../../services/order.service';
   styleUrls: ['./orders.scss']
 })
 export class Orders implements OnInit {
-  expandedOrderId: number | null = null;
+  selectedOrder: any = null;
 
   constructor(private orderService: OrderService) {}
 
@@ -22,11 +22,33 @@ export class Orders implements OnInit {
     return this.orderService.getOrders();
   }
 
-  toggleDetails(orderId: number) {
-    if (this.expandedOrderId === orderId) {
-      this.expandedOrderId = null;
-    } else {
-      this.expandedOrderId = orderId;
-    }
+  openDetails(order: any) {
+    const parsed = this.parseOrderStatus(order.status);
+    this.selectedOrder = {
+      ...order,
+      parsedStatus: parsed.status,
+      address: parsed.address,
+      paymentMethod: parsed.paymentMethod,
+      paymentStatus: parsed.paymentStatus
+    };
+  }
+
+  closeDetails() {
+    this.selectedOrder = null;
+  }
+
+  parseOrderStatus(statusStr: string) {
+    if (!statusStr) return { status: 'Placed', address: 'Not available', paymentMethod: 'Razorpay', paymentStatus: 'Paid' };
+    const parts = statusStr.split(';');
+    const status = parts[0] || 'Placed';
+    const addressPart = parts.find(p => p.startsWith('Address:'))?.replace('Address:', '') || 'Not available';
+    const paymentMethodPart = parts.find(p => p.startsWith('PaymentMethod:'))?.replace('PaymentMethod:', '') || 'Razorpay';
+    const paymentStatusPart = parts.find(p => p.startsWith('PaymentStatus:'))?.replace('PaymentStatus:', '') || 'Paid';
+    return {
+      status,
+      address: addressPart,
+      paymentMethod: paymentMethodPart,
+      paymentStatus: paymentStatusPart
+    };
   }
 }

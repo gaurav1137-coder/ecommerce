@@ -73,6 +73,10 @@ button {
   font-weight: 600;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
 button:hover {
@@ -80,10 +84,22 @@ button:hover {
   box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
 }
 
-.hint {
-  margin-top: 18px;
-  font-size: 13px;
-  color: #9ca3af;
+.auth-link {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #94a3b8;
+
+  a {
+    color: #facc15;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+
+    &:hover {
+      color: #fbbf24;
+      text-decoration: underline;
+    }
+  }
 }
 
 /* Spinner */

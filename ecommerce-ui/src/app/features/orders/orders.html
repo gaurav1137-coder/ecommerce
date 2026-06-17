@@ -22,20 +22,94 @@
       <small>{{ order.date }}</small>
 
       <!-- VIEW DETAILS BUTTON -->
-      <button class="details-btn" (click)="toggleDetails(order.id)">
-        {{ expandedOrderId === order.id ? 'Hide Details ▲' : 'View Details' }}
+      <button class="details-btn" (click)="openDetails(order)">
+        View Details
       </button>
 
-      <!-- ORDER DETAILS DRAWER -->
-      <div class="order-details" *ngIf="expandedOrderId === order.id">
-        <h4>Order Items</h4>
-        <div class="detail-item" *ngFor="let item of order.items">
-          <img [src]="item.image" [alt]="item.name" class="item-img">
-          <div class="item-info">
-            <p class="item-name">{{ item.name }}</p>
-            <p class="item-meta">Qty: {{ item.quantity }} | Price: ₹{{ item.price }}</p>
+    </div>
+
+  </div>
+
+  <!-- ORDER DETAILS MODAL -->
+  <div class="modal-backdrop" *ngIf="selectedOrder" (click)="closeDetails()">
+
+    <div class="order-modal" (click)="$event.stopPropagation()">
+
+      <button class="modal-close" (click)="closeDetails()">✕</button>
+
+      <h2 style="color: #d4af37; margin-top: 0; margin-bottom: 25px; font-weight: 700; letter-spacing: 1px;">
+        Order Details - #{{ selectedOrder.id }}
+      </h2>
+
+      <div class="modal-body-grid">
+
+        <!-- LEFT SIDE: ITEMS LIST -->
+        <div class="modal-section scroll-items">
+          <h4 class="section-title">Ordered Items</h4>
+          <div class="modal-item-card" *ngFor="let item of selectedOrder.items">
+            <img [src]="item.image" [alt]="item.name" class="modal-item-img">
+            <div class="modal-item-info">
+              <h5>{{ item.name }}</h5>
+              <p class="desc">{{ item.description }}</p>
+              <div class="meta-row">
+                <span>Qty: <b>{{ item.quantity }}</b></span>
+                <span>Unit Price: <b>₹{{ item.price }}</b></span>
+                <span>Total: <b style="color: #f5d76e;">₹{{ item.price * item.quantity }}</b></span>
+              </div>
+            </div>
           </div>
         </div>
+
+        <!-- RIGHT SIDE: METADATA -->
+        <div class="modal-section meta-side">
+
+          <!-- STATUS TIMELINE -->
+          <div class="meta-block">
+            <h4 class="section-title">Order Status</h4>
+            <div class="timeline">
+              <div class="timeline-step" [class.active]="selectedOrder.parsedStatus.toLowerCase() === 'placed' || selectedOrder.parsedStatus.toLowerCase() === 'processing' || selectedOrder.parsedStatus.toLowerCase() === 'shipped' || selectedOrder.parsedStatus.toLowerCase() === 'delivered'">
+                <div class="step-dot"></div>
+                <div class="step-text">Placed</div>
+              </div>
+              <div class="timeline-step" [class.active]="selectedOrder.parsedStatus.toLowerCase() === 'processing' || selectedOrder.parsedStatus.toLowerCase() === 'shipped' || selectedOrder.parsedStatus.toLowerCase() === 'delivered'">
+                <div class="step-dot"></div>
+                <div class="step-text">Processing</div>
+              </div>
+              <div class="timeline-step" [class.active]="selectedOrder.parsedStatus.toLowerCase() === 'shipped' || selectedOrder.parsedStatus.toLowerCase() === 'delivered'">
+                <div class="step-dot"></div>
+                <div class="step-text">Shipped</div>
+              </div>
+              <div class="timeline-step" [class.active]="selectedOrder.parsedStatus.toLowerCase() === 'delivered'">
+                <div class="step-dot"></div>
+                <div class="step-text">Delivered</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SHIPPING ADDRESS -->
+          <div class="meta-block">
+            <h4 class="section-title">Shipping Address</h4>
+            <p class="address-text">{{ selectedOrder.address }}</p>
+          </div>
+
+          <!-- PAYMENT INFO -->
+          <div class="meta-block">
+            <h4 class="section-title">Payment Information</h4>
+            <div class="pay-info">
+              <p>Method: <b>{{ selectedOrder.paymentMethod }}</b></p>
+              <p>Status: <span class="status-badge paid">{{ selectedOrder.paymentStatus }}</span></p>
+              <p style="font-size: 12px; color: #94a3b8; word-break: break-all;">Txn ID: <b>{{ selectedOrder.paymentId }}</b></p>
+            </div>
+          </div>
+
+          <!-- ORDER TOTAL -->
+          <div class="meta-block total-summary">
+            <p>Total Items: <b>{{ selectedOrder.items.length }}</b></p>
+            <p style="font-size: 20px; color: #f5d76e; margin-top: 10px; margin-bottom: 0;">Total Amount: <b>₹{{ selectedOrder.total }}</b></p>
+          </div>
+
+        </div>
+
       </div>
 
     </div>

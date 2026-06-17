@@ -16,16 +16,30 @@
       [(ngModel)]="mobileNumber"
     />
 
-    <input
-      type="password"
-      name="otp"
-      placeholder="Enter OTP (0000)"
-      [(ngModel)]="otp"
-    />
+    <div style="position: relative; width: 100%;">
+      <input
+        [type]="showOtp ? 'text' : 'password'"
+        name="otp"
+        placeholder="Enter OTP (0000)"
+        [(ngModel)]="otp"
+        style="padding-right: 45px;"
+      />
+      <button
+        type="button"
+        (click)="toggleOtpVisibility()"
+        style="position: absolute; right: 10px; top: 50%; transform: translateY(-70%); width: auto; background: transparent; border: none; color: #9ca3af; padding: 5px; cursor: pointer; box-shadow: none;"
+      >
+        <i class="fa-solid" [class.fa-eye]="showOtp" [class.fa-eye-slash]="!showOtp"></i>
+      </button>
+    </div>
 
-    <button type="submit">
+    <button type="submit" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
       Login
     </button>
+
+    <div class="auth-link" style="margin-top: 20px; font-size: 14px; color: #94a3b8;">
+      Don't have an account? <a routerLink="/register" style="color: #facc15; text-decoration: none; font-weight: 600;">Register</a>
+    </div>
 
     <div class="hint">
       <p>Customer: <b>1234567890</b> (OTP: 0000)</p>

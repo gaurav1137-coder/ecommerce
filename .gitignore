@@ -1,0 +1,8 @@
+**/bin/
+**/obj/
+**/.angular/
+**/dist/
+**/node_modules/
+publish-test/
+*.user
+*.suo

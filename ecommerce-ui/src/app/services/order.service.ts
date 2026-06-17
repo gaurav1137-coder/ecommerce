@@ -39,6 +39,7 @@ export class OrderService {
             items: o.orderItems ? o.orderItems.map((oi: any) => ({
               id: oi.id,
               name: oi.product?.name || 'Product',
+              description: oi.product?.description || 'No description available for this premium item.',
               quantity: oi.quantity,
               price: oi.price,
               image: oi.product?.imageUrl || (oi.product?.images && oi.product.images.length > 0 ? oi.product.images[0].imageUrl : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600')

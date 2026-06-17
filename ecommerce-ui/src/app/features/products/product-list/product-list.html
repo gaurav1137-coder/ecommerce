@@ -2,11 +2,30 @@
 
   <h2 class="title">All Products</h2>
 
-  <div class="products-grid">
+  <!-- NO PRODUCTS FOUND -->
+  <div class="no-products" *ngIf="products.length === 0 && !loading">
+    <h3>No Products Found</h3>
+    <p>Try searching for something else!</p>
+  </div>
+
+  <!-- SKELETON LOADER -->
+  <div class="products-grid" *ngIf="loading && products.length === 0">
+    <div class="product-card skeleton-card" *ngFor="let item of [1,2,3,4,5,6,7,8]">
+      <div class="skeleton-image shimmer"></div>
+      <div class="info">
+        <div class="skeleton-title shimmer"></div>
+        <div class="skeleton-price shimmer"></div>
+        <div class="skeleton-btn shimmer"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCTS GRID -->
+  <div class="products-grid" *ngIf="products.length > 0">
 
     <div class="product-card" *ngFor="let product of products">
 
-      <img [src]="product.image" [alt]="product.name">
+      <img [src]="product.image" [alt]="product.name" loading="lazy">
 
       <div class="info">
 
@@ -19,7 +38,7 @@
           <span class="old">₹{{ product.oldPrice }}</span>
         </div>
         <button class="wishlist-btn" [class.active]="isWishlisted(product.id)" (click)="toggleWishlist(product); $event.stopPropagation()">
-          ❤️
+          <i class="fa-heart" [class.fa-solid]="isWishlisted(product.id)" [class.fa-regular]="!isWishlisted(product.id)"></i>
         </button>
 
         <!-- IMPORTANT NAVIGATION -->
@@ -31,6 +50,11 @@
 
     </div>
 
+  </div>
+
+  <!-- BOTTOM SPINNER FOR INFINITE SCROLL -->
+  <div class="bottom-loader" *ngIf="loading && products.length > 0">
+    <span class="spinner"></span> Loading more products...
   </div>
 
 </section>

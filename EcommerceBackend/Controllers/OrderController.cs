@@ -32,7 +32,7 @@ public class OrderController : ControllerBase
         {
             UserId = dto.UserId,
             TotalAmount = dto.TotalAmount,
-            Status = "Placed",
+            Status = $"Placed;Address:{dto.Address};PaymentMethod:{dto.PaymentMethod};PaymentStatus:Paid",
             OrderDate = DateTime.UtcNow
         };
 
@@ -95,7 +95,18 @@ public class OrderController : ControllerBase
         if (order == null)
             return NotFound();
 
-        order.Status = status;
+        var existingStatus = order.Status ?? string.Empty;
+        var parts = existingStatus.Split(';');
+        var addressPart = parts.FirstOrDefault(p => p.StartsWith("Address:"));
+        var payMethodPart = parts.FirstOrDefault(p => p.StartsWith("PaymentMethod:"));
+        var payStatusPart = parts.FirstOrDefault(p => p.StartsWith("PaymentStatus:"));
+        
+        var newStatusStr = status;
+        if (addressPart != null) newStatusStr += ";" + addressPart;
+        if (payMethodPart != null) newStatusStr += ";" + payMethodPart;
+        if (payStatusPart != null) newStatusStr += ";" + payStatusPart;
+
+        order.Status = newStatusStr;
 
         await _context.SaveChangesAsync();
 

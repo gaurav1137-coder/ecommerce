@@ -1,4 +1,4 @@
 export const environment = {
-  production: true,
-  apiUrl: 'https://nexora-api.onrender.com/api'
+  production: false,
+  apiUrl: 'http://localhost:5127/api'
 };

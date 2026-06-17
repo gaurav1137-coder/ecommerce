@@ -1,10 +1,12 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule, Router,NavigationEnd } from '@angular/router';
-import { filter } from 'rxjs';
+import { RouterModule, Router, NavigationEnd } from '@angular/router';
+import { filter, Subject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { CartService } from '../../../services/cart.service';
 import { AuthService } from '../../../services/auth.service';
+import { WishlistService } from '../../../services/wishlist.service';
 
 @Component({
   selector: 'app-navbar',
@@ -13,10 +15,18 @@ import { AuthService } from '../../../services/auth.service';
   templateUrl: './navbar.html',
   styleUrls: ['./navbar.scss']
 })
-export class Navbar {
+export class Navbar implements OnInit, OnDestroy {
   showNavbar = true;
   searchText = '';
   isProfileOpen = false;
+
+  private searchSubject = new Subject<string>();
+  private searchSubscription!: Subscription;
+
+  public cartService = inject(CartService);
+  public auth = inject(AuthService);
+  public wishlistService = inject(WishlistService);
+  private router = inject(Router);
 
   toggleProfile(event: MouseEvent) {
     event.stopPropagation();
@@ -28,20 +38,35 @@ export class Navbar {
     this.isProfileOpen = false;
   }
 
-  constructor(
-    public cartService: CartService,
-    public auth: AuthService,
-    private router: Router
-  )  {
-
-    // hide navbar on login page
+  constructor() {
+    // hide navbar on login and register pages
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: any) => {
-
-        this.showNavbar = !event.url.includes('/login');
-
+        const url = event.url;
+        this.showNavbar = !url.includes('/login') && !url.includes('/register');
       });
+  }
+
+  ngOnInit() {
+    this.searchSubscription = this.searchSubject.pipe(
+      debounceTime(400),
+      distinctUntilChanged()
+    ).subscribe(val => {
+      this.router.navigate(['/products'], {
+        queryParams: { q: val.trim() || null }
+      });
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.searchSubscription) {
+      this.searchSubscription.unsubscribe();
+    }
+  }
+
+  onSearchInput() {
+    this.searchSubject.next(this.searchText);
   }
 
   // 🔎 SEARCH (NOW WORKS WITH ROUTER)
@@ -65,7 +90,8 @@ export class Navbar {
   logout() {
     this.auth.logout();
   }
+
   goToProfile() {
-  this.router.navigate(['/profile']);
-}
+    this.router.navigate(['/profile']);
+  }
 }

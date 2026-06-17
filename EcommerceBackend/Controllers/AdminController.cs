@@ -24,14 +24,29 @@ public class AdminController : ControllerBase
 
         var totalOrders = await _context.Orders.CountAsync();
 
-        var totalCategories = await _context.Categories.CountAsync();
+        var totalRevenue = await _context.Orders.SumAsync(o => o.TotalAmount);
+
+        var recentOrders = await _context.Orders
+            .Include(o => o.User)
+            .OrderByDescending(o => o.OrderDate)
+            .Take(5)
+            .Select(o => new
+            {
+                o.Id,
+                CustomerName = o.User != null ? o.User.Name : "Unknown",
+                o.TotalAmount,
+                o.Status,
+                o.OrderDate
+            })
+            .ToListAsync();
 
         return Ok(new
         {
             TotalUsers = totalUsers,
             TotalProducts = totalProducts,
             TotalOrders = totalOrders,
-            TotalCategories = totalCategories
+            TotalRevenue = totalRevenue,
+            RecentOrders = recentOrders
         });
     }
 

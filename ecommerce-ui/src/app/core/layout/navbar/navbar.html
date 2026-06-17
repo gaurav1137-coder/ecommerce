@@ -3,7 +3,7 @@
   <div class="logo">NEXORA</div>
 
   <div class="search-container">
-    <input [(ngModel)]="searchText" (keyup.enter)="search()" placeholder="Search..." />
+    <input [(ngModel)]="searchText" (input)="onSearchInput()" (keyup.enter)="search()" placeholder="Search..." />
     <button (click)="search()">🔍</button>
   </div>
 
@@ -11,7 +11,10 @@
 
     <a routerLink="/">Home</a>
     <a routerLink="/products">Products</a>
-    <a routerLink="/wishlist">Wishlist ❤️</a>
+    <a routerLink="/wishlist">
+      Wishlist ❤️
+      <span *ngIf="wishlistService.getCount() > 0">{{ wishlistService.getCount() }}</span>
+    </a>
 
     <a routerLink="/cart">
       Cart 🛒

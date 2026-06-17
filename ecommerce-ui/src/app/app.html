@@ -1,3 +1,15 @@
 <app-navbar></app-navbar>
 
 <router-outlet></router-outlet>
+
+<!-- Session Expired Modal -->
+<div class="modal-backdrop" *ngIf="showSessionExpiredModal">
+  <div class="session-modal">
+    <h3>Session Expired</h3>
+    <p>Your session has expired. Please login again.</p>
+    <div class="modal-actions">
+      <button class="btn btn-primary" (click)="loginAgain()">Login Again</button>
+      <button class="btn btn-secondary" (click)="cancelSessionExpired()">Cancel</button>
+    </div>
+  </div>
+</div>

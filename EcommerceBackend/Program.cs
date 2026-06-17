@@ -4,14 +4,12 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ✅ Do not force HTTP only — Render provides HTTPS automatically
 var port = Environment.GetEnvironmentVariable("PORT");
 if (!string.IsNullOrWhiteSpace(port))
 {
     builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 }
 
-// Add services
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -28,39 +26,75 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddScoped<JwtService>();
 
-// ✅ Restrict CORS to your Angular frontend domain
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular",
         policy =>
         {
-            policy.WithOrigins(
-                "https://ecommerce-frontend-e59x.onrender.com", // Angular frontend on Render
-                "https://ecommerce-n1me.onrender.com"           // Backend itself
-            )
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials();
+            policy.AllowAnyOrigin()
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
         });
 });
 
 var app = builder.Build();
 
-// Configure middleware
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-// ✅ Always redirect HTTP → HTTPS in production
-app.UseHttpsRedirection();
+var shouldSeedDatabase = builder.Configuration.GetValue("SeedDatabase", false);
+if (shouldSeedDatabase)
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        try
+        {
+            var context = services.GetRequiredService<ApplicationDbContext>();
+            DbSeeder.Seed(context);
+        }
+        catch (Exception ex)
+        {
+            var logger = services.GetRequiredService<ILogger<Program>>();
+            logger.LogError(ex, "An error occurred during database seeding.");
+        }
+    }
+}
+
+if (!app.Environment.IsProduction())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseCors("AllowAngular");
 
 app.UseAuthorization();
 
 app.MapGet("/", () => Results.Ok("Ecommerce API running"));
+
+app.MapGet("/health/db", async (ApplicationDbContext context) =>
+{
+    try
+    {
+        var canConnect = await context.Database.CanConnectAsync();
+        var productCount = canConnect ? await context.Products.CountAsync() : 0;
+        var userCount = canConnect ? await context.Users.CountAsync() : 0;
+
+        return Results.Ok(new
+        {
+            Database = canConnect ? "Connected" : "Not connected",
+            Products = productCount,
+            Users = userCount
+        });
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem(ex.Message);
+    }
+});
 
 app.MapControllers();
 
